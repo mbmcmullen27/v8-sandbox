@@ -55,6 +55,7 @@ func execute(response string, wg *sync.WaitGroup, file *os.File) {
 
 	//call back to write a byteslice to the passed flie
 	filewrite, _ := v8go.NewFunctionTemplate(iso, func(info *v8go.FunctionCallbackInfo) *v8go.Value {
+		fmt.Printf("%v", info.Args()[0])
 		data := []byte(info.Args()[0].String())
 		numb, err := file.Write(data)
 		check(err)
@@ -69,7 +70,7 @@ func execute(response string, wg *sync.WaitGroup, file *os.File) {
 	global.Set("print", filewrite)
 
 	util, _ := ioutil.ReadFile("util.js")
-	yaml, _ := ioutil.ReadFile("node_modules/yaml")
+	// yaml, _ := ioutil.ReadFile("node_modules/yaml") 
 	ctx, _ := v8go.NewContext(iso, global) 
 	
 	ctx.RunScript(string(util), "util.js") 

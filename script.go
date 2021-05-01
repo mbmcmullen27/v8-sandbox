@@ -48,7 +48,7 @@ func main() {
 	wg.Wait()
 }
 
-func execute(pod string, wg *sync.WaitGroup, file *os.File) {
+func execute(response string, wg *sync.WaitGroup, file *os.File) {
 	defer wg.Done()
 
 	iso, _ := v8go.NewIsolate() 
@@ -73,7 +73,7 @@ func execute(pod string, wg *sync.WaitGroup, file *os.File) {
 	ctx, _ := v8go.NewContext(iso, global) 
 	
 	ctx.RunScript(string(util), "util.js") 
-	var scr string ="const result = parse("+pod+")"
+	var scr string ="const result = parse("+response+")"
 	ctx.RunScript(scr, "main.js") 
 	ctx.RunScript("result", "value.js") 
 

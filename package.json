@@ -1,0 +1,14 @@
+{
+  "name": "v8-go-runner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "util.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fishbot",
+  "license": "ISC",
+  "dependencies": {
+    "yaml": "^1.10.2"
+  }
+}

@@ -70,7 +70,6 @@ func execute(response string, wg *sync.WaitGroup, file *os.File) {
 	global.Set("print", filewrite)
 
 	util, _ := ioutil.ReadFile("util.js")
-	// yaml, _ := ioutil.ReadFile("node_modules/yaml") 
 	ctx, _ := v8go.NewContext(iso, global) 
 	
 	ctx.RunScript(string(util), "util.js") 

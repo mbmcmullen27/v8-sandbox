@@ -1,41 +1,41 @@
-// const yaml = require('yaml')
-
 function parse(resp){
     print(toYaml(resp,0))
-    // resp.results.forEach((event)=>{
-    //     // print(JSON.stringify(event)+'\n') 
-
-    //     // print(event.description+'\n') 
-    //     // return {
-    //     //     id: event.id,
-    //     //     slug: event.slug,
-    //     //     eventtype: event.type.name,
-    //     //     description: event.description,
-    //     //     location: event.location,
-    //     //     img: event.feature_image,
-    //     //     date: event.date
-    //     // }
-    //     // return JSON.stringify(event.slug)
-    // })
 }
 
-function toYaml(data,depth){
-    console.log(`depth: $(depth)`)
+function toYaml(data, depth, leftalign=false){
     const TAB = '   '
     res = ''
     keys = Object.keys(data)
-    keys.forEach((key)=>{
+    keys.forEach((key,index)=>{
         var item = data[key]
-        if (item === null){
-            res+=`${TAB.repeat(depth)}${key}: {}\n`
+        const TABS = leftalign & index == 0 ? TAB.repeat(0) : TAB.repeat(depth)
+
+        if (item === null || item.length == 0){
+            res+=`${TABS}${key}: {}\n`
+
         } else if (typeof(item) == 'string'){
-            res+=`${TAB.repeat(depth)}${key}: "${item}"\n`
-        }else if (typeof(item) == 'number'){
-            res+=`${TAB.repeat(depth)}${key}: ${item}\n`
+            res+=`${TABS}${key}:`
+
+            if(item.includes('\n')){
+                res+=` |\n${TABS+TAB}`
+                res+=item.split('\n').join(`\n${TABS+TAB}`)
+                res+='\n'
+            
+            } else {
+                res+=` "${item}"\n`
+            }
+        }else if (typeof(item) == 'number' || typeof(item) == 'boolean'){
+            res+=`${TABS}${key}: ${item}\n`
+
+        } else if(!isNaN(key)) {
+            res+=`${TABS}-  `
+            res+=toYaml(item,depth+1,true)
+            
         } else {
+            res+=`${TABS}${key}:\n`
             res+=toYaml(item,depth+1)
+
         }
     })
-    // console.log(res)
     return res
 }
